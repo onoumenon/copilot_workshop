@@ -93,8 +93,150 @@ describe('Arithmetic', function () {
         });
     });
 
-// TODO: Challenge #1
- 
+    describe('Square Root', function () {
+        it('returns the square root of a positive integer', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=4&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2 });
+                    done();
+                });
+        });
+        it('returns the square root of a positive floating point number', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=4.2&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.04939015319192 });
+                    done();
+                });
+        });
+        it('returns the square root of zero', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=0&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('returns null for a negative integer', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=-4&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+        it('returns null for a negative floating point number', function (done) {
+            request.get('/arithmetic?operation=sqrt&operand1=-4.2&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+    });
+
+    describe('Subtraction', function () {
+        it('subtracts two positive integers', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=21&operand2=21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('subtracts a positive integer from zero', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=0&operand2=21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -21 });
+                    done();
+                });
+        });
+        it('subtracts a negative integer from a positive integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=21&operand2=-42')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 63 });
+                    done();
+                });
+        });
+        it('subtracts two negative integers', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=-21&operand2=-21')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('subtracts a floating point number from an integer', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=2.5&operand2=-5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 7.5 });
+                    done();
+                });
+        });
+        it('subtracts with negative exponent', function (done) {
+            request.get('/arithmetic?operation=subtract&operand1=1.2e-5&operand2=-1.2e-5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 2.4e-5 });
+                    done();
+                });
+        });
+    });
+
+    describe('Power', function () {
+        it('raises a positive integer to a positive integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 8 });
+                    done();
+                });
+        });
+        it('raises a positive integer to a negative integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=-3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0.125 });
+                    done();
+                });
+        });
+        it('raises a negative integer to a positive integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -8 });
+                    done();
+                });
+        });
+        it('raises a negative integer to a negative integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=-3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -0.125 });
+                    done();
+                });
+        });
+        it('raises a positive integer to a floating point power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1.4142135623730951 });
+                    done();
+                });
+        });
+        it('raises a negative integer to a floating point power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+    });    
 
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
